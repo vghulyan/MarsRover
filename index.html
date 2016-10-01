@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>banana</title>
+    <style type="text/css"> body {
+        font-size: 34px;
+    } </style>
+</head>
+
+<h1>Should print 1 3 N</h1>
+<h3>and</h3>
+<h1>5 1 E</h1>
+<div id="test"></div>
+
+<script type="text/javascript">
+    function Rover() {
+        var N = 1;
+        var E = 2;
+        var S = 3;
+        var W = 4;
+        this._x = 0;
+        this._y = 0;
+        this._facing = N;
+        function setPosition(x, y, facing) {
+            this._x = x;
+            this._y = y;
+            this._facing = facing;
+        }
+
+        function printPosition() {
+            var _dir = 'N';
+            if (this._facing === 1) {
+                _dir = 'N';
+            } else if (this._facing === 2) {
+                _dir = 'E';
+            } else if (this._facing === 3) {
+                _dir = 'S';
+            } else if (this._facing === 4) {
+                _dir = 'W';
+            }
+
+            var r = document.getElementById("test").innerHTML + '<br />';
+            r += this._x + ' ' + this._y + ' ' + _dir;
+            document.getElementById("test").innerHTML = r;
+        }
+
+        function process(commands) {
+            for (var i = 0; i < commands.length; i++) {
+                processChar(commands[i]);
+            }
+        }
+
+        function processChar(command) {
+            if (command === 'L') {
+                turnLeft();
+            } else if (command === 'R') {
+                turnRight();
+            } else if (command === 'M') {
+                move();
+            }
+            else {
+                throw new Error("Speak in Mars language, please!");
+            }
+        }
+
+        function move() {
+            if (this._facing === N) {
+                this._y++;
+            } else if (this._facing === E) {
+                this._x++;
+            } else if (this._facing === S) {
+                this._y--;
+            } else if (this._facing === W) {
+                this._x--;
+            }
+        }
+
+        function turnLeft() {
+            this._facing = (this._facing - 1) < N ? W : this._facing - 1;
+        }
+
+        function turnRight() {
+            this._facing = (this._facing + 1) > W ? N : this._facing + 1;
+        }
+
+        function init() {
+            setPosition(1, 2, 1);
+            process('LMLMLMLMM');
+            printPosition(); // prints 1 3 N
+
+            setPosition(3, 3, 2);
+            process('MMRMMRMRRM');
+            printPosition(); // prints 5 1 E
+        }
+
+        init();
+    }
+    var rover = new Rover();
+
+</script>
+
+</body>
+</html>
